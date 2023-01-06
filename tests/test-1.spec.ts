@@ -12,4 +12,6 @@ test('test', async ({ page }) => {
 
   await page6.getByText('Cleanliness');
   await page6.locator('._4oybiu')
+
+  
 });
