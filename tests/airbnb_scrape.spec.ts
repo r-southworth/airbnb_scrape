@@ -18,9 +18,9 @@ test('test', async ({ page }) => {
   });
   return data;
 });
-  var nextpage = await page.getByRole('link', { name: 'Next' });
-  console.log(nextpage);
-  while (nextpage) {
+  var nextpage = await page.getByRole('button', { name: 'Next' });
+  console.log(nextpage.isEnabled);
+  while (nextpage.isEnabled) {
     await page.getByRole('link', { name: 'Next' }).click();
     const listings = await page.$$eval('.cy5jw6o.dir.dir-ltr', all_items => {
       const data: any [] = [];
@@ -30,8 +30,8 @@ test('test', async ({ page }) => {
       });
       return data;
     });
-    nextpage = await page.getByRole('link', { name: 'Next' });
-    console.log(nextpage);
+    nextpage = await page.getByRole('button', { name: 'Next' });
+    console.log(nextpage.isEnabled);
   }
 console.log(listings);
 
