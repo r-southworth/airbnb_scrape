@@ -12,4 +12,6 @@ test('test', async ({ page }) => {
   await page.getByRole('link', { name: 'Next' }).click();
   await page.getByRole('link', { name: 'Next' }).click();
   await page.getByRole('link', { name: 'Next' }).click();
+
+  await page.getByRole('link', { name: '15' }).click();
 });
