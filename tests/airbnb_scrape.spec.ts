@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 
-test('test', async ({ page }) => {
+test('get listings', async ({ page }) => {
   await page.goto('https://www.airbnb.com/');
   page.getByRole('button', { name: 'Close' }).click();
   await page.getByRole('button', { name: 'Location Anywhere' }).click();
