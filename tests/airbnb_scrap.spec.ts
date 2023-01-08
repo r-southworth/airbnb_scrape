@@ -11,8 +11,10 @@ test('get listings', async ({ page }) => {
   await page.getByTestId('structured-search-input-search-button').click();
   await page.waitForLoadState('networkidle');
 
-  const nums = await page.$('a._833p2h.connection.lastId');
-  console.log(await nums);
+  const nums = await page.locator('a._833p2h').last().textContent();
+  console.log(nums);
+
+
 
 });
 

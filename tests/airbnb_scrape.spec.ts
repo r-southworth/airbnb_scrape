@@ -12,29 +12,23 @@ test('get listings', async ({ page }) => {
   await page.waitForLoadState('networkidle');
 
   const listingimage = page.locator('._6tbg2q');
-  await expect(listingimage.first()).toBeVisible();
-  const listings = await page.$$eval('.cy5jw6o.dir.dir-ltr', all_items => {
-    const data: any [] = [];
-    all_items.forEach(listing =>{
-      const id = listing.querySelector('.t1jojoys.dir.dir-ltr')?.id;
-      data.push({id});
-    });
-    return data;
-  });
+  // await expect(listingimage.first()).toBeVisible();
+   const listings: any [] = []
+  //   const data: any [] = [];
+  //   all_items.forEach(listing =>{
+  //     const id = listing.querySelector('.t1jojoys.dir.dir-ltr')?.id;
+  //     data.push({id});
+  //   });
+  //   return data;
+  // });
   
-  const nextPageButton = async ()=>{
-    try {
-    const nextPage = await page.getByRole('link', { name: 'Next' }).click();
-    return true;
-  } catch {
-    return false;
-  }};
-
+  const totalPages = await page.locator('a._833p2h').last().textContent();
+  const numTotalPages = +!totalPages
 
   //var nextPage = await page.getByRole('button', { name: 'Next' }).filter({has: page.locator('._1bfat5l')})[0].isEnabled;
   //var nextPageButton = await nextpage[0];
 
-  while (await nextPageButton() == true) {
+  for (let i=0; i<numTotalPages; i++) {
     await expect(listingimage.first()).toBeVisible();
     const newlistings = await page.$$eval('.cy5jw6o.dir.dir-ltr', all_items => {
       const data: any [] = [];
@@ -46,6 +40,7 @@ test('get listings', async ({ page }) => {
     });
     // console.log(nextpage);
     listings.push(newlistings);
+    await page.getByRole('link', {name: 'Next'}).click();
   }
 console.log(listings);
 
