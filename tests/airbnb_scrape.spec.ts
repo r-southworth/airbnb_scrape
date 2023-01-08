@@ -22,11 +22,18 @@ test('get listings', async ({ page }) => {
     return data;
   });
   
-  var nextPage = await page.getByRole('link', { name: 'Next' });
+  const nextPageButton = async ()=>{
+    const nextPage = await page.getByRole('button', { name: 'Next' }).filter({has: page.locator('._1bfat5l')})[0].isEnabled;
+    if(!nextPage){
+      return false;
+    };
+    return await nextPage;
+  };
+
+  //var nextPage = await page.getByRole('button', { name: 'Next' }).filter({has: page.locator('._1bfat5l')})[0].isEnabled;
   //var nextPageButton = await nextpage[0];
 
-  console.log(nextPage);
-  if (await nextPage.isEnabled) {
+  while (nextPageButton()) {
     await page.getByRole('link', { name: 'Next' }).click();
     await expect(listingimage.first()).toBeVisible();
     const newlistings = await page.$$eval('.cy5jw6o.dir.dir-ltr', all_items => {
@@ -37,7 +44,7 @@ test('get listings', async ({ page }) => {
       });
       return data;
     });
-    // nextpage = await page.getByRole('link', { name: 'Next' });
+    nextPageButton();
     // console.log(nextpage);
     listings.push(newlistings);
   }
