@@ -23,18 +23,18 @@ test('get listings', async ({ page }) => {
   });
   
   const nextPageButton = async ()=>{
-    const nextPage = await page.getByRole('button', { name: 'Next' }).filter({has: page.locator('._1bfat5l')})[0].isEnabled;
-    if(!nextPage){
-      return false;
-    };
-    return await nextPage;
-  };
+    try {
+    const nextPage = await page.getByRole('link', { name: 'Next' }).click();
+    return true;
+  } catch {
+    return false;
+  }};
+
 
   //var nextPage = await page.getByRole('button', { name: 'Next' }).filter({has: page.locator('._1bfat5l')})[0].isEnabled;
   //var nextPageButton = await nextpage[0];
 
-  while (nextPageButton()) {
-    await page.getByRole('link', { name: 'Next' }).click();
+  while (await nextPageButton() == true) {
     await expect(listingimage.first()).toBeVisible();
     const newlistings = await page.$$eval('.cy5jw6o.dir.dir-ltr', all_items => {
       const data: any [] = [];
@@ -44,7 +44,6 @@ test('get listings', async ({ page }) => {
       });
       return data;
     });
-    nextPageButton();
     // console.log(nextpage);
     listings.push(newlistings);
   }
