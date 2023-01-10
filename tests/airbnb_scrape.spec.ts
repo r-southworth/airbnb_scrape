@@ -23,7 +23,13 @@ test('get listings', async ({ page }) => {
   // });
   
   const totalPages = await page.locator('a._833p2h').last().textContent();
-  const numTotalPages = +!totalPages
+  var numTotalPages: number
+  
+  if (totalPages == null){
+    numTotalPages = 1;
+  } else {
+    numTotalPages = +totalPages
+  }
 
   //var nextPage = await page.getByRole('button', { name: 'Next' }).filter({has: page.locator('._1bfat5l')})[0].isEnabled;
   //var nextPageButton = await nextpage[0];
@@ -34,13 +40,15 @@ test('get listings', async ({ page }) => {
       const data: any [] = [];
       all_items.forEach(listing =>{
         const id = listing.querySelector('.t1jojoys.dir.dir-ltr')?.id;
-        data.push({id});
+        data.push(id);
       });
       return data;
     });
     // console.log(nextpage);
-    listings.push(newlistings);
+    listings.push(...newlistings);
+    if (i != (numTotalPages-1)){
     await page.getByRole('link', {name: 'Next'}).click();
+    } 
   }
 console.log(listings);
 
