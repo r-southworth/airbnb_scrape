@@ -22,5 +22,8 @@ test('generator', async ({ page }) => {
   await page2.goto('https://www.airbnb.com/rooms/46545881?source_impression_id=p3_1673455370_jkf96v7M8dtfNPkq');
   await page2.getByRole('button', { name: 'Close' }).click();
   await page2.locator('._4oybiu').first().click();
+
+
+  
 });
 

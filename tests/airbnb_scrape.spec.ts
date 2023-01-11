@@ -56,21 +56,27 @@ test('get listings', async ({ page, context }) => {
   }
 
 console.log(listings[listings.length-1]);
-var cleanliness: string|null
+var cleanliness: string
 
 async function goToPage (id: string) {
   const url = 'https://www.airbnb.com/rooms/' + id;
   //const listingPagePromise = context.waitForEvent('page');
   const listingPage = await context.newPage();
   await listingPage.goto(url);
-  await listingPage.waitForLoadState('networkidle');
+  for (let i=0; i<10; i++){
   listingPage.getByRole('button', { name: 'Close' }).click();
+  await listingPage.waitForLoadState('networkidle');
+  
   
   //const url = 'https://www.airbnb.com/rooms/' + id;
   //await page.goto(url);
   //await page.waitForLoadState('networkidle');
   //page.getByRole('button', { name: 'Close' }).click();
-  cleanliness = await listingPage.locator('._4oybiu').textContent();
+  cleanliness = await listingPage.innerText('._4oybiu');
+  if (cleanliness != undefined){
+    break;
+  };
+  };
   console.log(cleanliness);
 }
 
@@ -80,7 +86,6 @@ const listingId = testListing.substring(6);
 
 
 await goToPage(listingId);
-//console.log(cleanliness);
 
 // Add back for iterating over all the pages
 // listings.forEach(listing => {
