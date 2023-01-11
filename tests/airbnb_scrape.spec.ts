@@ -61,9 +61,8 @@ var cleanliness: string|null
 async function goToPage (id: string) {
   const url = 'https://www.airbnb.com/rooms/' + id;
   //const listingPagePromise = context.waitForEvent('page');
-  await page.goto(url);
-  const listingPagePromise = context.newPage();
-  const listingPage = await listingPagePromise;
+  const listingPage = await context.newPage();
+  await listingPage.goto(url);
   await listingPage.waitForLoadState('networkidle');
   listingPage.getByRole('button', { name: 'Close' }).click();
   
@@ -80,7 +79,7 @@ const testListing = listings[0];
 const listingId = testListing.substring(6);
 
 
-awaitgoToPage(listingId);
+await goToPage(listingId);
 //console.log(cleanliness);
 
 // Add back for iterating over all the pages
