@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 //create an empty list of listing results
 var listings: string [] = []
 
-test('get listings', async ({ page }) => {
+test('get listings', async ({ page, context }) => {
   //go to airbnb site
   await page.goto('https://www.airbnb.com/');
 
@@ -56,17 +56,37 @@ test('get listings', async ({ page }) => {
   }
 
 console.log(listings[listings.length-1]);
+var cleanliness: string|null
 
-  async function goToPage (id: string) {
+async function goToPage (id: string) {
   const url = 'https://www.airbnb.com/rooms/' + id;
+  //const listingPagePromise = context.waitForEvent('page');
   await page.goto(url);
-  await page.waitForLoadState('networkidle');
-
+  const listingPagePromise = context.newPage();
+  const listingPage = await listingPagePromise;
+  await listingPage.waitForLoadState('networkidle');
+  listingPage.getByRole('button', { name: 'Close' }).click();
+  
+  //const url = 'https://www.airbnb.com/rooms/' + id;
+  //await page.goto(url);
+  //await page.waitForLoadState('networkidle');
+  //page.getByRole('button', { name: 'Close' }).click();
+  cleanliness = await listingPage.locator('._4oybiu').textContent();
+  console.log(cleanliness);
 }
 
-listings.forEach(listing => {
-  const id = listing.substring(6);
-  goToPage(id);
-});
+// just for testing a single page
+const testListing = listings[0];
+const listingId = testListing.substring(6);
+
+
+awaitgoToPage(listingId);
+//console.log(cleanliness);
+
+// Add back for iterating over all the pages
+// listings.forEach(listing => {
+//   const id = listing.substring(6);
+//   goToPage(id);
+// });
 
 });
