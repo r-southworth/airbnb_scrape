@@ -60,7 +60,7 @@ var scores: string []
 var location: string
 var title: string
 var listingInfo: string
-var allListingsInfo: string []
+var allListingsInfo: string [] = []
 
 async function goToPage (id: string) {
   const url = 'https://www.airbnb.com/rooms/' + id;
@@ -68,22 +68,23 @@ async function goToPage (id: string) {
   const listingPage = await context.newPage();
   await listingPage.goto(url);
   for (let i=0; i<10; i++){
-  listingPage.getByRole('button', { name: 'Close' }).click();
-  await listingPage.waitForLoadState('networkidle');
-  scores = await listingPage.locator('._4oybiu').allInnerTexts();
-  const locationRaw = await (await listingPage.locator('._9xiloll').innerText());
-  location = locationRaw.split(',').join('-');
-  title = await listingPage.locator('h1').innerText();
-  listingInfo = `${id}, ${title} , ${location}`
-  for (const x of scores){
-    listingInfo += `, ${x}`;
-  }
-  if (listingInfo != undefined){
-    allListingsInfo.push(listingInfo)
-    break;
+    listingPage.getByRole('button', { name: 'Close' }).click();
+    await listingPage.waitForLoadState('networkidle');
+    scores = await listingPage.locator('._4oybiu').allInnerTexts();
+    const locationRaw = await (await listingPage.locator('._9xiloll').innerText());
+    location = locationRaw.split(',').join('-');
+    title = await listingPage.locator('h1').innerText();
+    listingInfo = `${id}, ${title} , ${location}`
+    for (const x of scores){
+      listingInfo += `, ${x}`;
+    }
+    console.log(i);
+    if (listingInfo != undefined){
+      allListingsInfo.push(listingInfo)
+      break;
+    };
   };
-};
-
+  await listingPage.close();
   console.log(allListingsInfo);
 }
 
@@ -92,10 +93,20 @@ async function goToPage (id: string) {
 // const listingId = testListing.substring(6);
 // await goToPage(listingId);
 
+
+//testing fewer pages
+for (let k = 0; k<10; k++){
+  const testListing = listings[k];
+  const listingId = testListing.substring(6);
+  console.log(listingId);
+  await goToPage(listingId);
+  console.log(k);
+};
+
 // Add back for iterating over all the pages
-listings.forEach(listing => {
-  const id = listing.substring(6);
-  goToPage(id);
-});
+// listings.forEach(listing => {
+//   const id = listing.substring(6);
+//   goToPage(id);
+// });
 
 });
