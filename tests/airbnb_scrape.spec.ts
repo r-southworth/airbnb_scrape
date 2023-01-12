@@ -72,8 +72,9 @@ async function goToPage (id: string) {
     await listingPage.waitForLoadState('networkidle');
     scores = await listingPage.locator('._4oybiu').allInnerTexts();
     const locationRaw = await (await listingPage.locator('._9xiloll').innerText());
-    location = locationRaw.split(',').join('-');
-    title = await listingPage.locator('h1').innerText();
+    location = '"' + locationRaw + '"';
+    const titleRaw = await listingPage.locator('h1').innerText();
+    title = '"' + titleRaw + '"'
     listingInfo = `${id}, ${title} , ${location}`
     for (const x of scores){
       listingInfo += `, ${x}`;
@@ -84,7 +85,6 @@ async function goToPage (id: string) {
       break;
     };
   };
-  await listingPage.close();
   console.log(allListingsInfo);
 }
 
@@ -95,7 +95,7 @@ async function goToPage (id: string) {
 
 
 //testing fewer pages
-for (let k = 0; k<10; k++){
+for (let k = 0; k<50; k++){
   const testListing = listings[k];
   const listingId = testListing.substring(6);
   console.log(listingId);
