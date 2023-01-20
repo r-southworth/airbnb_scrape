@@ -1,10 +1,11 @@
-import { test, expect } from '@playwright/test';
 import {chromium } from 'playwright'
 
 //create an empty list of listing results
 var listings: string [] = []
 
-test('get listings', async ({ page }) => {
+async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
   //go to airbnb site
   await page.goto('https://www.airbnb.com/');
 
@@ -39,7 +40,8 @@ test('get listings', async ({ page }) => {
 
   //On each page of search results take the id of each listing and add it to our listings variable
   for (let i=0; i<numTotalPages; i++) {
-    await expect(listingimage.first()).toBeVisible();
+    await page.waitForSelector('._6tbg2q');
+    // await listingimage.first().toBeVisible();
     const newlistings = await page.$$eval('.cy5jw6o.dir.dir-ltr', all_items => {
       const data: any [] = [];
       all_items.forEach(listing =>{
@@ -114,4 +116,4 @@ for (let k = 0; k<500; k++){
 //   goToPage(id);
 // });
 
-});
+};
