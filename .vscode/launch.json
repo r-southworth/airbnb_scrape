@@ -5,6 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Playwright Tests",
+            "program": "${workspaceFolder}/node_modules/playwright-core/cli.js",
+            "args": ["test","${file}"],
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against airbnb",
+            "url": "http://airbnb.com",
+            "webRoot": "${workspaceFolder}"
+        },
+        
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
