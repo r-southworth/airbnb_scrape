@@ -86,6 +86,7 @@ async function goToPage (id: string) {
     };
   };
   console.log(allListingsInfo);
+  await listingPage.close();
 }
 
 // just for testing a single page
@@ -95,7 +96,7 @@ async function goToPage (id: string) {
 
 
 //testing fewer pages
-for (let k = 0; k<50; k++){
+for (let k = 0; k<500; k++){
   const testListing = listings[k];
   const listingId = testListing.substring(6);
   console.log(listingId);
