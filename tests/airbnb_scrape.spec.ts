@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import {chromium } from 'playwright'
 
 //create an empty list of listing results
 var listings: string [] = []
 
-test('get listings', async ({ page, context }) => {
+test('get listings', async ({ page }) => {
   //go to airbnb site
   await page.goto('https://www.airbnb.com/');
 
@@ -62,10 +63,13 @@ var title: string
 var listingInfo: string
 var allListingsInfo: string [] = []
 
+
 async function goToPage (id: string) {
   const url = 'https://www.airbnb.com/rooms/' + id;
   //const listingPagePromise = context.waitForEvent('page');
-  const listingPage = await context.newPage();
+  const browser = await chromium.launch();
+  const newContext = await browser.newContext();
+  const listingPage = await newContext.newPage();
   await listingPage.goto(url);
   for (let i=0; i<10; i++){
     listingPage.getByRole('button', { name: 'Close' }).click();
@@ -86,7 +90,7 @@ async function goToPage (id: string) {
     };
   };
   console.log(allListingsInfo);
-  await listingPage.close();
+  await newContext.close();
 }
 
 // just for testing a single page
