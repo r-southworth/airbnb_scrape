@@ -102,7 +102,7 @@ async function goToPage (id: string) {
 
 
 //testing fewer pages
-for (let k = 0; k<500; k++){
+for (let k = 0; k<10; k++){
   const testListing = listings[k];
   const listingId = testListing.substring(6);
   console.log(listingId);
